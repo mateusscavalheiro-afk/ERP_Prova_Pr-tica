@@ -47,11 +47,9 @@ browser.switch_to.window(browser.window_handles[1])
 browser.get("https://forms.gle/SGy2pnLA9LdQfXeSA")
 
 # Open the archieve
-py.press("win")
-py.typewrite("gerenciador de arquivos")
-py.press("enter")
-time.sleep(3)
-py.press(['tab', 'tab', 'tab', 'tab', 'tab', 'tab', 'tab'], interval=0.5)
+py.hotkey('win', 'e')
+time.sleep(1)
+py.press(['tab' for _ in range(7)], interval=0.5)
 time.sleep(2)
 py.typewrite('Base_dados')
 time.sleep(2)
@@ -60,21 +58,15 @@ py.click(x=341, y=162, clicks=1)
 py.press('enter')
 
 # Read the archive
-def read_excel_data(file_path, sheet_name, cell_coordinate):
-    # Load the workbook and select the worksheet
+def read_excel_data1(file_path, sheet_name, cell_coordinate):
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook[sheet_name]
-    
-    # Get the value from a specific cell
     cell_value = sheet[cell_coordinate].value
-    
-    # --- PRINT THE VALUE HERE ---
-    print(f"The value in {cell_coordinate} is: {cell_value}")                
     return cell_value
 
 # Usage
 file_path = r'C:\Users\mateus_s_cavalheiro\Downloads\Base_dados.xlsx'
-read_excel_data(file_path, 'Página1', 'A2')
+first_value = read_excel_data1(file_path, 'Página1', 'B2')
 
 time.sleep(3)
 py.keyDown('alt')
@@ -84,3 +76,57 @@ time.sleep(0.2)
 py.press('tab')
 time.sleep(1)
 py.keyUp('alt')
+time.sleep(2)
+py.moveTo(390, 657, duration=0.8)
+py.click(x=390, y=657, clicks=1)
+time.sleep(2)
+py.press('tab')
+time.sleep(1)
+py.press('enter')
+time.sleep(1)
+py.press('down')
+time.sleep(1)
+py.press('enter')
+time.sleep(1)
+py.press('tab')
+py.typewrite(str(first_value))
+time.sleep(1)
+py.press('tab')
+time.sleep(2)
+py.moveTo(389, 699, duration=0.8)
+py.click(x=389, y=699, clicks=1)
+time.sleep(1)
+py.press('tab')
+time.sleep(1)
+py.press('tab')
+time.sleep(1)
+py.press('enter')
+time.sleep(1)
+py.press('tab')
+time.sleep(1)
+py.press('tab')
+time.sleep(1)
+py.press('down')
+time.sleep(1)
+py.press('down')
+time.sleep(1)
+py.press('enter')
+time.sleep(3)
+py.keyDown('alt')
+time.sleep(0.2)
+py.press('tab')
+def read_excel_data2(file_path, sheet_name, cell_coordinate):
+    workbook = openpyxl.load_workbook(file_path)
+    sheet = workbook[sheet_name]
+    cell_value = sheet[cell_coordinate].value
+    return cell_value
+
+# Usage
+file_path = r'C:\Users\mateus_s_cavalheiro\Downloads\Base_dados.xlsx'
+second_value = read_excel_data2(file_path, 'Página1', 'B3')
+
+time.sleep(3)
+py.keyDown('alt')
+time.sleep(0.2)
+py.press('tab')
+py.typewrite(str(second_value))
