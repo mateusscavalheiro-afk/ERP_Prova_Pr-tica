@@ -47,6 +47,7 @@ browser.get("https://mail.google.com/")
 browser.execute_script("window.open('about:blank', '_blank');")
 browser.switch_to.window(browser.window_handles[1]) 
 browser.get("https://forms.gle/SGy2pnLA9LdQfXeSA")
+time.sleep(5) # Give the form a moment to fully render
 
 # ==========================================
 # OPEN THE ARCHIVE
@@ -57,9 +58,12 @@ py.press(['tab' for _ in range(7)], interval=0.5)
 time.sleep(2)
 py.typewrite('Base_dados')
 time.sleep(2)
+# It is generally safer to hit enter to open rather than specific coordinates, 
+# but if this works reliably for your specific screen, we'll leave it.
 py.moveTo(341, 162, duration=0.8)
 py.click(x=341, y=162, clicks=1)
 py.press('enter')
+time.sleep(3) # Wait for Excel to open
 
 # ==========================================
 # READ EXCEL DATA
@@ -84,46 +88,56 @@ nine_value = read_excel_data(file_path, 'Página1', 'B10')
 ten_value = read_excel_data(file_path, 'Página1', 'B11')
 
 # ==========================================
-# FORM AUTOMATION (PyAutoGUI)
+# FORM AUTOMATION (PyAutoGUI - Keyboard Only)
 # ==========================================
-# First Entry
-time.sleep(3)
+
+# Switch back to the Chrome window
 py.keyDown('alt')
 time.sleep(0.2)
-py.press('tab')
-time.sleep(0.2)
-py.press('tab')
+py.press('tab', presses=2, interval=0.2)
 time.sleep(1)
 py.keyUp('alt')
 time.sleep(2)
+
+# Click the VERY FIRST dropdown just to get the form in focus.
+# Because the page hasn't scrolled yet, this single coordinate click is safe.
 py.moveTo(390, 657, duration=0.8)
 py.click(x=390, y=657, clicks=1)
-time.sleep(2)
-py.press('tab')
-time.sleep(1)
-py.press('enter')
-time.sleep(1)
-py.press('down')
-time.sleep(1)
-py.press('enter')
-time.sleep(1)
-py.press('tab')
-py.typewrite(str(one_value))
-time.sleep(1)
-py.press('tab')
-time.sleep(2)
-py.moveTo(389, 699, duration=0.8)
-py.click(x=389, y=699, clicks=1)
-time.sleep(1)
-py.press('tab')
-time.sleep(1)
-py.press('tab')
-time.sleep(1)
-py.press('enter')
 time.sleep(1)
 
-# Second Entry (Loop for the remaining data)
-# Grouping the remaining values with their corresponding 'down' presses
+# --- FIRST ENTRY ---
+# The dropdown is already open from the click above
+py.press('down')
+time.sleep(0.5)
+py.press('enter')
+time.sleep(0.5)
+
+# Tab to type box
+py.press('tab')
+time.sleep(0.5)
+py.typewrite(str(one_value))
+time.sleep(0.5)
+
+# Tab to radio buttons
+py.press('tab', presses=2, interval=0.5)
+time.sleep(1)
+
+# Logic for first entry radio button
+try:
+    num_val_1 = float(one_value)
+except (ValueError, TypeError):
+    num_val_1 = 0
+
+if num_val_1 >= 40:
+    py.press('space') # Selects the first option
+else:
+    py.press('down')  # Moves to the second option
+    time.sleep(0.5)
+    py.press('space') # Selects it
+
+time.sleep(1)
+
+# --- REMAINING ENTRIES LOOP ---
 remaining_data = [
     (2, two_value), (3, three_value), (4, four_value),
     (5, five_value), (6, six_value), (7, seven_value),
@@ -131,33 +145,31 @@ remaining_data = [
 ]
 
 for downs, value in remaining_data:
-    time.sleep(2)
-    
-    # 1. Press 2 tabs
+    time.sleep(1.5)
 
-    py.press('tab', presses=2, interval=1)
+    # 1. Tab to the next dropdown 
+    # (Adjust the number of tabs here if it doesn't land exactly on the dropdown)
+    py.press('tab', presses=2, interval=0.5)
     
-    # 2. Press down conforming the id
-    time.sleep(1)
-    py.press('enter')
-    time.sleep(1)
+    # 2. Open dropdown and press down corresponding to the id
+    time.sleep(0.5)
+    py.press('enter') # Opens dropdown
+    time.sleep(0.5)
     py.press('down', presses=downs, interval=0.2)
-    time.sleep(1)
+    time.sleep(0.5)
+    py.press('enter') # Confirms dropdown selection
     
-    py.press('enter') 
-    
-    # Go to type box
-    time.sleep(1)
+    # 3. Tab to type box
+    time.sleep(0.5)
     py.press('tab')
-    time.sleep(1)
+    time.sleep(0.5)
     py.typewrite(str(value))
     
-    # 3. Press 2 tabs
-    time.sleep(1)   
-    py.press('tab', presses=2, interval=1)
+    # 4. Tab to radio buttons
+    time.sleep(0.5)   
+    py.press('tab', presses=2, interval=0.5)
     
-    # 4. If else logic
-    # Convert valu to string
+    # 5. If else logic (Keyboard navigation)
     try:
         numeric_value = float(value)
     except (ValueError, TypeError):
@@ -165,10 +177,10 @@ for downs, value in remaining_data:
         
     time.sleep(1)
     if numeric_value >= 40:
-        py.moveTo(387, 359, duration=0.8)
-        time.sleep(1)
-        py.click()
+        # Pressing space selects the currently focused radio button
+        py.press('space') 
     else:
-        py.moveTo(391, 399, duration=0.8)
-        time.sleep(1)
-        py.click()
+        # Pressing down moves to the next radio button in the group
+        py.press('down')
+        time.sleep(0.5)
+        py.press('space')
