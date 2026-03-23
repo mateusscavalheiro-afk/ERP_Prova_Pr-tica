@@ -58,7 +58,7 @@ py.click(x=341, y=162, clicks=1)
 py.press('enter')
 
 # Read the archive
-def read_excel_data1(file_path, sheet_name, cell_coordinate):
+def read_excel_data(file_path, sheet_name, cell_coordinate):
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook[sheet_name]
     cell_value = sheet[cell_coordinate].value
@@ -66,7 +66,16 @@ def read_excel_data1(file_path, sheet_name, cell_coordinate):
 
 # Usage
 file_path = r'C:\Users\mateus_s_cavalheiro\Downloads\Base_dados.xlsx'
-first_value = read_excel_data1(file_path, 'Página1', 'B2')
+one_value = read_excel_data(file_path, 'Página1', 'B2')
+two_value = read_excel_data(file_path, 'Página1', 'B3')
+three_value = read_excel_data(file_path, 'Página1', 'B4')
+four_value = read_excel_data(file_path, 'Página1', 'B5')
+five_value = read_excel_data(file_path, 'Página1', 'B6')
+six_value = read_excel_data(file_path, 'Página1', 'B7')
+seven_value = read_excel_data(file_path, 'Página1', 'B8')
+eight_value = read_excel_data(file_path, 'Página1', 'B9')
+nine_value = read_excel_data(file_path, 'Página1', 'B10')
+ten_value = read_excel_data(file_path, 'Página1', 'B11')
 
 time.sleep(3)
 py.keyDown('alt')
@@ -89,7 +98,7 @@ time.sleep(1)
 py.press('enter')
 time.sleep(1)
 py.press('tab')
-py.typewrite(str(first_value))
+py.typewrite(str(one_value))
 time.sleep(1)
 py.press('tab')
 time.sleep(2)
@@ -112,21 +121,17 @@ py.press('down')
 time.sleep(1)
 py.press('enter')
 time.sleep(3)
-py.keyDown('alt')
-time.sleep(0.2)
+time.sleep(1)
 py.press('tab')
-def read_excel_data2(file_path, sheet_name, cell_coordinate):
-    workbook = openpyxl.load_workbook(file_path)
-    sheet = workbook[sheet_name]
-    cell_value = sheet[cell_coordinate].value
-    return cell_value
-
-# Usage
-file_path = r'C:\Users\mateus_s_cavalheiro\Downloads\Base_dados.xlsx'
-second_value = read_excel_data2(file_path, 'Página1', 'B3')
-
-time.sleep(3)
-py.keyDown('alt')
-time.sleep(0.2)
+py.typewrite(str(two_value))
+time.sleep(1)
 py.press('tab')
-py.typewrite(str(second_value))
+time.sleep(2)
+py.moveTo(389, 699, duration=0.8)
+py.click(x=389, y=699, clicks=1)
+time.sleep(1)
+py.press('tab')
+time.sleep(1)
+py.press('tab')
+time.sleep(1)
+py.press('enter')
