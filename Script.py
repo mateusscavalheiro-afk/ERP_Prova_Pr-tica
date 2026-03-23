@@ -77,6 +77,7 @@ eight_value = read_excel_data(file_path, 'Página1', 'B9')
 nine_value = read_excel_data(file_path, 'Página1', 'B10')
 ten_value = read_excel_data(file_path, 'Página1', 'B11')
 
+# first
 time.sleep(3)
 py.keyDown('alt')
 time.sleep(0.2)
@@ -111,6 +112,8 @@ py.press('tab')
 time.sleep(1)
 py.press('enter')
 time.sleep(1)
+
+# second
 py.press('tab')
 time.sleep(1)
 py.press('tab')
