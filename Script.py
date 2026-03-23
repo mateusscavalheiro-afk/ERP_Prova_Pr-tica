@@ -166,7 +166,9 @@ for downs, value in remaining_data:
     time.sleep(1)
     if numeric_value >= 40:
         py.moveTo(387, 359, duration=0.8)
+        time.sleep(1)
         py.click()
     else:
         py.moveTo(391, 399, duration=0.8)
+        time.sleep(1)
         py.click()
