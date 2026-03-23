@@ -32,7 +32,9 @@ servicey = Service(ChromeDriverManager().install())
 browser = webdriver.Chrome(service=servicey, options=chrome_options)
 browser.maximize_window()
 
+# ==========================================
 # OPEN TABS
+# ==========================================
 # 1st Email tab
 browser.get("https://accounts.google.com/")
 WebDriverWait(browser, 30).until(EC.visibility_of_element_located((By.ID, "identifierId"))).send_keys(email)
@@ -46,7 +48,9 @@ browser.execute_script("window.open('about:blank', '_blank');")
 browser.switch_to.window(browser.window_handles[1]) 
 browser.get("https://forms.gle/SGy2pnLA9LdQfXeSA")
 
-# Open the archieve
+# ==========================================
+# OPEN THE ARCHIVE
+# ==========================================
 py.hotkey('win', 'e')
 time.sleep(1)
 py.press(['tab' for _ in range(7)], interval=0.5)
@@ -57,7 +61,9 @@ py.moveTo(341, 162, duration=0.8)
 py.click(x=341, y=162, clicks=1)
 py.press('enter')
 
-# Read the archive
+# ==========================================
+# READ EXCEL DATA
+# ==========================================
 def read_excel_data(file_path, sheet_name, cell_coordinate):
     workbook = openpyxl.load_workbook(file_path)
     sheet = workbook[sheet_name]
@@ -77,7 +83,10 @@ eight_value = read_excel_data(file_path, 'Página1', 'B9')
 nine_value = read_excel_data(file_path, 'Página1', 'B10')
 ten_value = read_excel_data(file_path, 'Página1', 'B11')
 
-# first
+# ==========================================
+# FORM AUTOMATION (PyAutoGUI)
+# ==========================================
+# First Entry
 time.sleep(3)
 py.keyDown('alt')
 time.sleep(0.2)
@@ -113,29 +122,51 @@ time.sleep(1)
 py.press('enter')
 time.sleep(1)
 
-# second
-py.press('tab')
-time.sleep(1)
-py.press('tab')
-time.sleep(1)
-py.press('down')
-time.sleep(1)
-py.press('down')
-time.sleep(1)
-py.press('enter')
-time.sleep(3)
-time.sleep(1)
-py.press('tab')
-py.typewrite(str(two_value))
-time.sleep(1)
-py.press('tab')
-time.sleep(1)
-py.press('tab')
-py.moveTo(389, 409, duration=0.8)
-py.click(x=389, y=409, clicks=1)
-time.sleep(1)
-py.press('tab')
-time.sleep(1)
-py.press('tab')
-time.sleep(1)
-py.press('enter')
+# Second Entry (Loop for the remaining data)
+# Grouping the remaining values with their corresponding 'down' presses
+remaining_data = [
+    (2, two_value), (3, three_value), (4, four_value),
+    (5, five_value), (6, six_value), (7, seven_value),
+    (8, eight_value), (9, nine_value), (10, ten_value)
+]
+
+for downs, value in remaining_data:
+    time.sleep(2)
+    
+    # 1. Press 2 tabs
+
+    py.press('tab', presses=2, interval=1)
+    
+    # 2. Press down conforming the id
+    time.sleep(1)
+    py.press('enter')
+    time.sleep(1)
+    py.press('down', presses=downs, interval=0.2)
+    time.sleep(1)
+    
+    py.press('enter') 
+    
+    # Go to type box
+    time.sleep(1)
+    py.press('tab')
+    time.sleep(1)
+    py.typewrite(str(value))
+    
+    # 3. Press 2 tabs
+    time.sleep(1)   
+    py.press('tab', presses=2, interval=1)
+    
+    # 4. If else logic
+    # Convert valu to string
+    try:
+        numeric_value = float(value)
+    except (ValueError, TypeError):
+        numeric_value = 0
+        
+    time.sleep(1)
+    if numeric_value >= 40:
+        py.moveTo(387, 359, duration=0.8)
+        py.click()
+    else:
+        py.moveTo(391, 399, duration=0.8)
+        py.click()
