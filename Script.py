@@ -176,3 +176,27 @@ for downs, value in remaining_data:
     time.sleep(0.5)
     py.press('enter') # Clicks Avançar
     time.sleep(2.5) # Wait for the next page to load before restarting loop
+
+# =================
+# --- SEND THE FORM ---
+# =================
+
+py.press('tab', presses=2, interval=0.5)
+time.sleep(0.5)
+py.press('enter')
+time.sleep(0.5)
+py.press('down', presses=2, interval=0.5)
+time.sleep(0.5)
+py.press('enter')
+time.sleep(0.5)
+py.press('tab', presses=2, interval=0.5)
+time.sleep(0.5)
+py.press('enter')
+time.sleep(2)
+py.press('tab', presses=2, interval=0.5)
+time.sleep(0.5)
+py.typewrite('https://github.com/mateusscavalheiro-afk/ERP_Prova_Pr-tica.git')
+time.sleep(1)
+py.press('tab', presses=2, interval=0.5)
+time.sleep(0.5)
+py.press('enter')
